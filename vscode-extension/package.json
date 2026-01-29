@@ -59,7 +59,7 @@
       "properties": {
         "productivityTracker.backendUrl": {
           "type": "string",
-          "default": "http://localhost:3000",
+          "default": "https://productivity-backend-31s3.onrender.com",
           "description": "Backend API URL for syncing data"
         },
         "productivityTracker.syncInterval": {

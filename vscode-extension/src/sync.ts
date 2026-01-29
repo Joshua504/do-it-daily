@@ -41,7 +41,7 @@ export class Syncer {
     const config = vscode.workspace.getConfiguration("productivityTracker");
     const backendUrl = config.get<string>(
       "backendUrl",
-      "http://localhost:3000",
+      "https://productivity-backend-31s3.onrender.com",
     );
 
     const unsyncedData = await this.storage.getUnsyncedData();

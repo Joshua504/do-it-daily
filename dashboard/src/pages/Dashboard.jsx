@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaCode, FaShapes, FaFolder, FaHistory } from "react-icons/fa";
 import axios from "axios";
+import config from "../config";
 import Layout from "../components/Layout";
 import Header from "../components/Header";
 import StatCard from "../components/StatCard";
@@ -38,7 +39,7 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.get(
-        "http://localhost:3000/api/productivity/stats/me?days=365",
+        `${config.API_BASE_URL}/api/productivity/stats/me?days=365`,
         { headers: { Authorization: `Bearer ${token}` } },
       );
       setStats(response.data);
@@ -66,7 +67,7 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.get(
-        "http://localhost:3000/api/system/logs",
+        `${config.API_BASE_URL}/api/system/logs`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },

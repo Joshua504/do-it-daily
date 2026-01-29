@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import config from "../config";
 import "./Auth.css";
 
 export default function Login({ setIsAuthenticated, setUsername }) {
@@ -27,7 +28,7 @@ export default function Login({ setIsAuthenticated, setUsername }) {
       const password = formData.password.trim();
 
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        `${config.API_BASE_URL}/api/auth/login`,
         { email, password },
       );
 
@@ -49,7 +50,7 @@ export default function Login({ setIsAuthenticated, setUsername }) {
   };
 
   const handleGitHub = () => {
-    window.location.href = "http://localhost:3000/api/auth/github";
+    window.location.href = `${config.API_BASE_URL}/api/auth/github`;
   };
 
   return (

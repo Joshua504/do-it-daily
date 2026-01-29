@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaKey, FaCopy, FaCheck, FaTrash } from "react-icons/fa";
 import axios from "axios";
+import config from "../config";
 import Layout from "../components/Layout";
 import Header from "../components/Header";
 
@@ -23,7 +24,7 @@ const Settings = ({ setIsAuthenticated, username }) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.get(
-        "http://localhost:3000/api/user/profile",
+        `${config.API_BASE_URL}/api/user/profile`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -41,7 +42,7 @@ const Settings = ({ setIsAuthenticated, username }) => {
     try {
       const token = localStorage.getItem("authToken");
       await axios.patch(
-        "http://localhost:3000/api/user/profile",
+        `${config.API_BASE_URL}/api/user/profile`,
         { dailyGoalHours: profile.dailyGoalHours },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -56,7 +57,7 @@ const Settings = ({ setIsAuthenticated, username }) => {
   const fetchKeys = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await axios.get("http://localhost:3000/api/keys", {
+      const response = await axios.get(`${config.API_BASE_URL}/api/keys`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data.success) {
@@ -75,7 +76,7 @@ const Settings = ({ setIsAuthenticated, username }) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        "http://localhost:3000/api/keys/generate",
+        `${config.API_BASE_URL}/api/keys/generate`,
         { displayName: name },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -94,7 +95,7 @@ const Settings = ({ setIsAuthenticated, username }) => {
     if (!window.confirm("Are you sure you want to revoke this token?")) return;
     try {
       const token = localStorage.getItem("authToken");
-      await axios.delete(`http://localhost:3000/api/keys/${id}`, {
+      await axios.delete(`${config.API_BASE_URL}/api/keys/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchKeys();
