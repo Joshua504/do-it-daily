@@ -1,0 +1,109 @@
+{
+  "name": "productivity-tracker",
+  "displayName": "Productivity Tracker",
+  "description": "Automatically track your daily coding productivity with real-time metrics and contribution graphs",
+  "version": "0.0.1",
+  "publisher": "uglyjosh",
+  "author": {
+    "name": "Ugly Josh"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/productivity-tracker"
+  },
+  "homepage": "https://github.com/yourusername/productivity-tracker/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/yourusername/productivity-tracker/issues"
+  },
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "keywords": [
+    "productivity",
+    "tracking",
+    "metrics",
+    "coding",
+    "statistics",
+    "github-contribution"
+  ],
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "productivity.syncNow",
+        "title": "Productivity: Sync Data Now"
+      },
+      {
+        "command": "productivity.showStats",
+        "title": "Productivity: Show Today's Stats"
+      },
+      {
+        "command": "productivity.resetData",
+        "title": "Productivity: Reset Data (Dev Only)"
+      }
+    ],
+    "configuration": {
+      "title": "Productivity Tracker",
+      "properties": {
+        "productivityTracker.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:3000",
+          "description": "Backend API URL for syncing data"
+        },
+        "productivityTracker.syncInterval": {
+          "type": "number",
+          "default": 3600,
+          "description": "Sync interval in seconds (default: 1 hour)"
+        },
+        "productivityTracker.trackingEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable productivity tracking"
+        },
+        "productivityTracker.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your personal API Key (generated in Dashboard Settings)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run esbuild -- --minify",
+    "esbuild": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --platform=node --target=node16",
+    "compile": "npm run esbuild",
+    "watch": "npm run esbuild -- --watch",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.0",
+    "@types/vscode": "^1.70.0",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
+    "esbuild": "^0.15.13",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.3",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "date-fns": "^2.29.3",
+    "uuid": "^9.0.0"
+  }
+}

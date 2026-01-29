@@ -1,0 +1,99 @@
+.contribution-graph {
+  background: #1a1a1a;
+  border: 2px solid #4ec9b0;
+  padding: 25px;
+  overflow-x: auto;
+}
+
+.graph-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.weekdays {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: #999;
+  letter-spacing: 0.5px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.weekdays div {
+  height: 20px;
+  line-height: 20px;
+}
+
+.graph-grid {
+  display: flex;
+  gap: 5px;
+}
+
+.week {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.day-cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(78, 201, 176, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.day-cell:hover {
+  box-shadow: 0 0 10px rgba(78, 201, 176, 0.6);
+  transform: scale(1.1);
+  border-color: #4ec9b0;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-end;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: #999;
+  letter-spacing: 0.5px;
+  margin-top: 15px;
+}
+
+.legend-cell {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(78, 201, 176, 0.3);
+}
+
+@media (max-width: 800px) {
+  .contribution-graph {
+    overflow-x: auto;
+    padding: 15px;
+    border: 2px solid #4ec9b0;
+  }
+
+  .graph-grid {
+    gap: 3px;
+  }
+
+  .week {
+    gap: 3px;
+  }
+
+  .day-cell {
+    width: 16px;
+    height: 16px;
+  }
+
+  .legend-cell {
+    width: 14px;
+    height: 14px;
+  }
+}
