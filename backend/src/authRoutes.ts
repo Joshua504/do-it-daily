@@ -1,5 +1,7 @@
 import { Router, Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
+import * as fs from "fs";
+import * as path from "path";
 import {
   generateToken,
   verifyToken,
@@ -18,6 +20,12 @@ import {
   updateUser,
   getFirestore,
 } from "./firebase";
+
+const debugLogPath = path.resolve(__dirname, "../auth_debug.log");
+const appendToLog = (msg: string) => {
+  const timestamp = new Date().toISOString();
+  fs.appendFileSync(debugLogPath, `${timestamp} - ${msg}\n`);
+};
 
 const router = Router();
 
@@ -79,16 +87,30 @@ router.post("/api/auth/login", async (req: Request, res: Response) => {
     }
 
     // Get user
+    appendToLog(`[AUTH] Login attempt for: ${email}`);
     const user = await getUserByEmail(email);
     if (!user) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      appendToLog(`[AUTH] Failure: User not found for ${email}`);
+      return res
+        .status(401)
+        .json({ error: "Invalid email or password", debug: "USER_NOT_FOUND" });
     }
+
+    appendToLog(`[AUTH] User found: ${user.userId}. Comparing passwords...`);
 
     // Compare password
     const passwordMatch = await comparePassword(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      appendToLog(`[AUTH] Failure: Password mismatch for ${email}`);
+      return res
+        .status(401)
+        .json({
+          error: "Invalid email or password",
+          debug: "PASSWORD_MISMATCH",
+        });
     }
+
+    appendToLog(`[AUTH] Success: Login authorized for ${email}`);
 
     // Generate token
     const token = generateToken(user.userId);

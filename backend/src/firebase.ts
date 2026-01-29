@@ -4,17 +4,33 @@ import * as path from "path";
 
 dotenv.config();
 
-// Import service account explicitly to ensure Project Id is detected correctly
-const serviceAccountPath = path.resolve(__dirname, "../serviceAccountKey.json");
-const serviceAccount = require(serviceAccountPath);
-
 let db: FirebaseFirestore.Firestore;
 
 export function initializeFirebase(): void {
   try {
     if (!admin.apps.length) {
+      let credential;
+
+      if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+        console.log(
+          "✓ Using Firebase Service Account from environment variable",
+        );
+        credential = admin.credential.cert(
+          JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT),
+        );
+      } else {
+        console.log("✓ Using Firebase Service Account from local JSON file");
+        // Import service account explicitly for local dev
+        const serviceAccountPath = path.resolve(
+          __dirname,
+          "../serviceAccountKey.json",
+        );
+        const serviceAccount = require(serviceAccountPath);
+        credential = admin.credential.cert(serviceAccount);
+      }
+
       admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
+        credential,
       });
     }
 

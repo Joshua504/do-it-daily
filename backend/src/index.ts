@@ -1,36 +1,45 @@
-import express from 'express'
-import cors from 'cors'
-import * as dotenv from 'dotenv'
-import { initializeFirebase } from './firebase'
-import routes from './routes'
-import authRoutes from './authRoutes'
+import express from "express";
+import cors from "cors";
+import * as dotenv from "dotenv";
+import { initializeFirebase } from "./firebase";
+import routes from "./routes";
+import authRoutes from "./authRoutes";
 
-dotenv.config()
+dotenv.config();
 
-const app = express()
-const PORT = process.env.PORT || 3000
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 // Initialize Firebase
 try {
-  initializeFirebase()
+  initializeFirebase();
 } catch (error) {
-  console.error('Failed to initialize Firebase. Make sure GOOGLE_APPLICATION_CREDENTIALS is set.')
-  process.exit(1)
+  console.error(
+    "Failed to initialize Firebase. Make sure GOOGLE_APPLICATION_CREDENTIALS or FIREBASE_SERVICE_ACCOUNT is set.",
+  );
+  process.exit(1);
 }
 
 // Routes
-app.use(authRoutes)
-app.use(routes)
+app.use(authRoutes);
+app.use(routes);
 
 // Error handling middleware
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Unhandled error:', err)
-  res.status(500).json({ error: 'Internal server error' })
-})
+app.use(
+  (
+    err: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    console.error("Unhandled error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  },
+);
 
 // Start server
 app.listen(PORT, () => {
@@ -43,5 +52,7 @@ app.listen(PORT, () => {
 ║   Productivity: /api/productivity      ║
 ║   API Keys: /api/keys/*                ║
 ╚════════════════════════════════════════╝
-  `)
-})
+  `);
+});
+
+export default app;
