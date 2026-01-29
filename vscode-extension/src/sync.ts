@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { Storage, DailyActivity } from "./storage";
 import { ActivityTracker } from "./tracker";
+import { Logger } from "./logger";
 
 export class Syncer {
   private storage: Storage;
@@ -44,29 +45,31 @@ export class Syncer {
       "https://productivity-backend-31s3.onrender.com",
     );
 
+    Logger.log(`[Syncer] Starting sync... (URL: ${backendUrl})`);
+
     const unsyncedData = await this.storage.getUnsyncedData();
 
     if (unsyncedData.length === 0) {
-      console.log("[Syncer] No data to sync");
+      Logger.log("[Syncer] No data to sync");
       return true;
     }
 
     try {
-      console.log(`[Syncer] Syncing ${unsyncedData.length} records...`);
+      Logger.log(`[Syncer] Syncing ${unsyncedData.length} records...`);
 
       for (const activity of unsyncedData) {
         const success = await this.sendToBackend(backendUrl, activity);
         if (success) {
           await this.storage.markSynced(activity.date);
-          console.log(`[Syncer] Synced: ${activity.date}`);
+          Logger.log(`[Syncer] Synced: ${activity.date}`);
         } else {
-          console.warn(`[Syncer] Failed to sync: ${activity.date}`);
+          Logger.log(`[Syncer] Failed to sync: ${activity.date}`);
         }
       }
 
       return true;
     } catch (error) {
-      console.error("[Syncer] Sync failed:", error);
+      Logger.error("Sync failed", error);
       return false;
     }
   }
@@ -79,11 +82,16 @@ export class Syncer {
     const apiKey = config.get<string>("apiKey");
 
     if (!apiKey) {
-      console.error("[Syncer] No API key configured");
+      Logger.error(
+        "[Syncer] No API key configured. Please obtain one from your dashboard settings.",
+      );
       return false;
     }
 
     try {
+      Logger.log(
+        `[Syncer] Sending data for ${activity.date} to ${backendUrl}...`,
+      );
       const response = await fetch(`${backendUrl}/api/productivity`, {
         method: "POST",
         headers: {
@@ -97,6 +105,7 @@ export class Syncer {
       });
 
       if (response.status === 401) {
+        Logger.error("[Syncer] Unauthorized: Invalid API Key");
         vscode.window
           .showErrorMessage(
             "🔒 Productivity Tracker: Invalid or missing API Key. Please update it in settings.",
@@ -104,24 +113,25 @@ export class Syncer {
           )
           .then((selection) => {
             if (selection === "Open Settings") {
-              vscode.env.openExternal(
-                vscode.Uri.parse("http://localhost:5173/settings"),
-              );
+              const dashboardUrl =
+                "https://productivity-dashboard-live.onrender.com/settings"; // Replace with real if known, or fallback
+              vscode.env.openExternal(vscode.Uri.parse(dashboardUrl));
             }
           });
         return false;
       }
 
       if (!response.ok) {
-        console.error(
+        Logger.error(
           `[Syncer] Backend error: ${response.status} ${response.statusText}`,
         );
         return false;
       }
 
+      Logger.log(`[Syncer] Successfully sent data for ${activity.date}`);
       return true;
     } catch (error) {
-      console.error("[Syncer] Network error:", error);
+      Logger.error("[Syncer] Network error during sendToBackend", error);
       return false;
     }
   }

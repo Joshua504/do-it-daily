@@ -10,8 +10,8 @@ description: How to host and deploy the frontend dashboard to Render
    - **Root Directory**: `dashboard`
    - **Build Command**: `npm install && npm run build`
    - **Publish Directory**: `dist`
-5. Click **Create Static Site**.
-6. **Important**: Go to **Redirects/Rewrites** and add a rule:
+5. Click **Deploy Static Site**.
+6. **Important**: Once the service page loads, go to **Redirects/Rewrites** in the left sidebar and add a rule:
    - Source: `/*`
    - Destination: `/index.html`
    - Action: `Rewrite`

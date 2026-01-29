@@ -15,15 +15,17 @@ Follow these steps to host your Productivity Tracker Dashboard for free on Rende
 - **Build Command**: `npm install && npm run build`
 - **Publish Directory**: `dist`
 
-## 3. Configure SPA Routing (CRITICAL)
+## 3. Configure SPA Routing (AFTER CREATION)
 
-Since this is a React Single Page Application, you need to tell Render to handle client-side routing:
+> [!IMPORTANT]
+> This tab only appears **after** you click "Deploy Static Site" and the service is created.
 
-1. Go to the **Redirects/Rewrites** tab in your Render dashboard.
-2. Click **Add Rule**.
-3. **Source**: `/*`
-4. **Destination**: `/index.html`
-5. **Action**: `Rewrite`
+1. Once the site is created, click on your service (e.g., `do it daily`) in the Render dashboard.
+2. Look at the left-hand sidebar and click the **Redirects/Rewrites** tab.
+3. Click **Add Rule**.
+4. **Source**: `/*`
+5. **Destination**: `/index.html`
+6. **Action**: `Rewrite`
 
 ## 4. Environment Variables
 

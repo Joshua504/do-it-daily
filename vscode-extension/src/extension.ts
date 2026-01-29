@@ -3,6 +3,7 @@ import { Storage } from "./storage";
 import { ActivityTracker } from "./tracker";
 import { Syncer } from "./sync";
 import { StatusBarManager } from "./statusbar";
+import { Logger } from "./logger";
 
 let storage: Storage;
 let tracker: ActivityTracker;
@@ -11,12 +12,13 @@ let statusBar: StatusBarManager;
 let timeCheckInterval: any = null;
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log("Productivity Tracker: Activating...");
+  Logger.initialize();
+  Logger.log("Productivity Tracker: Activating...");
 
   // Initialize storage
   storage = new Storage(context.globalStoragePath);
   storage.initialize().then(() => {
-    console.log("Storage initialized");
+    Logger.log("Storage initialized");
     checkOnboarding();
   });
 
@@ -117,9 +119,29 @@ export function activate(context: vscode.ExtensionContext) {
     },
   );
 
-  context.subscriptions.push(syncCommand, statsCommand, resetCommand);
+  // Listen for configuration changes (Auto-sync on API Key update)
+  const configListener = vscode.workspace.onDidChangeConfiguration(
+    async (e) => {
+      if (e.affectsConfiguration("productivityTracker.apiKey")) {
+        const apiKey = vscode.workspace
+          .getConfiguration("productivityTracker")
+          .get<string>("apiKey");
+        if (apiKey) {
+          Logger.log("API Key updated. Triggering initial sync...");
+          await syncer.syncNow();
+        }
+      }
+    },
+  );
 
-  console.log("Productivity Tracker: Activated successfully");
+  context.subscriptions.push(
+    syncCommand,
+    statsCommand,
+    resetCommand,
+    configListener,
+  );
+
+  Logger.log("Productivity Tracker: Activated successfully");
 }
 
 export function deactivate() {
