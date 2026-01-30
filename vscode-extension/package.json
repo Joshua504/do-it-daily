@@ -68,8 +68,8 @@
         },
         "productivityTracker.syncInterval": {
           "type": "number",
-          "default": 5,
-          "description": "Sync interval in seconds (default: 5 seconds for near real-time updates)"
+          "default": 60,
+          "description": "Sync interval in seconds (default: 60 seconds)"
         },
         "productivityTracker.trackingEnabled": {
           "type": "boolean",

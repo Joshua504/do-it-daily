@@ -25,15 +25,7 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Live Timer Effect
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (stats?.isCurrentlyActive) {
-        setSessionSeconds((prev) => prev + 1);
-      }
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [stats?.isCurrentlyActive]);
+  // Removed Live Timer Effect as per user request to only update every minute
 
   const fetchStats = async () => {
     try {
@@ -59,8 +51,7 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
   const formatTimer = (totalSeconds) => {
     const h = Math.floor(totalSeconds / 3600);
     const m = Math.floor((totalSeconds % 3600) / 60);
-    const s = totalSeconds % 60;
-    return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+    return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
   };
 
   const fetchLogs = async () => {
@@ -133,9 +124,9 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
           <StatCard
             label="Active Session"
             value={formatTimer(sessionSeconds)}
-            unit="HH:MM:SS"
+            unit="HH:MM"
             valueColor="var(--color-primary)"
-            isLive
+            isLive={stats?.isCurrentlyActive}
           />
           <StatCard
             label="Longest Streak"

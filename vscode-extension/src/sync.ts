@@ -15,7 +15,7 @@ export class Syncer {
 
   start(): void {
     const config = vscode.workspace.getConfiguration("productivityTracker");
-    const syncIntervalSeconds = config.get<number>("syncInterval", 5);
+    const syncIntervalSeconds = config.get<number>("syncInterval", 60);
 
     Logger.log(`[Syncer] Starting sync with interval: ${syncIntervalSeconds}s`);
 
