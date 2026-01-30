@@ -1,24 +1,24 @@
-import * as vscode from 'vscode';
-import { Storage } from './storage';
+import * as vscode from "vscode";
+import { Storage } from "./storage";
 
 export class StatusBarManager {
   private statusBarItem: vscode.StatusBarItem;
-  private updateInterval: NodeJS.Timer | null = null;
-  private blinkInterval: NodeJS.Timer | null = null;
+  private updateInterval: any = null;
+  private blinkInterval: any = null;
   private storage: Storage;
   private sessionStartTime: number = Date.now();
   private lastActivityTime: number = Date.now();
   private isActive: boolean = true;
   private blinkState: boolean = true;
-  private readonly IDLE_TIMEOUT = 5 * 60 * 1000; // 5 minutes
+  private readonly IDLE_TIMEOUT = 1 * 60 * 1000; // 1 minute
 
   constructor(storage: Storage) {
     this.storage = storage;
     this.statusBarItem = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Left,
-      100
+      100,
     );
-    this.statusBarItem.name = 'Productivity Tracker';
+    this.statusBarItem.name = "Productivity Tracker";
   }
 
   show(): void {
@@ -98,23 +98,21 @@ export class StatusBarManager {
   private async updateDot(): Promise<void> {
     const activity = await this.storage.getToday();
 
-    let timeStr = '0m';
+    let timeStr = "00:00";
     if (activity) {
-      const totalMinutes = activity.activity.timeSpent;
-      const hours = Math.floor(totalMinutes / 60);
-      const minutes = totalMinutes % 60;
+      const totalSeconds = activity.activity.timeSpent;
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
 
-      if (hours > 0) {
-        timeStr = `${hours}h ${minutes}m`;
-      } else {
-        timeStr = `${minutes}m`;
-      }
+      const h = hours.toString().padStart(2, "0");
+      const m = minutes.toString().padStart(2, "0");
+      timeStr = `${h}:${m}`;
     }
 
     // Only dot blinks: ● → _ → ●
-    const blinkDot = this.blinkState ? '●' : ' ';
-    const dotColor = this.isActive ? '#4ec9b0' : '#d43535'; // green when active, red when idle
-    
+    const blinkDot = this.blinkState ? "●" : " ";
+    const dotColor = this.isActive ? "#4ec9b0" : "#d43535"; // green when active, red when idle
+
     this.statusBarItem.text = `${blinkDot} ${timeStr}`;
     this.statusBarItem.color = dotColor;
   }
@@ -123,7 +121,7 @@ export class StatusBarManager {
     const activity = await this.storage.getToday();
 
     if (!activity) {
-      const dot = this.blinkState ? '●' : '◯';
+      const dot = this.blinkState ? "●" : "◯";
       this.statusBarItem.tooltip = `Productivity Tracker
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 🟢 Active (Green) / 🔴 Idle (Red)
@@ -131,10 +129,10 @@ No activity tracked yet today.`;
       return;
     }
 
-    const totalMinutes = activity.activity.timeSpent;
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    const seconds = this.getSessionSeconds();
+    const totalSeconds = activity.activity.timeSpent;
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
 
     const timeStr = this.formatTime(hours, minutes, seconds);
     const scoreStr = activity.score;
@@ -146,19 +144,19 @@ No activity tracked yet today.`;
 📝 Files Edited: ${activity.activity.filesEdited}
 📄 Lines Changed: ${activity.activity.linesChanged}
 📈 Productivity Score: ${scoreStr}/100
-🔄 Synced: ${activity.synced ? '✓ Yes' : '✗ No'}
+🔄 Synced: ${activity.synced ? "✓ Yes" : "✗ No"}
 
-Status: ${this.isActive ? '🟢 Active' : '🔴 Idle'}
+Status: ${this.isActive ? "🟢 Active" : "🔴 Idle"}
     `.trim();
 
     // Show command when clicked
-    this.statusBarItem.command = 'productivity.showStats';
+    this.statusBarItem.command = "productivity.showStats";
   }
 
   private formatTime(hours: number, minutes: number, seconds: number): string {
-    const h = String(hours).padStart(2, '0');
-    const m = String(minutes).padStart(2, '0');
-    const s = String(seconds).padStart(2, '0');
+    const h = String(hours).padStart(2, "0");
+    const m = String(minutes).padStart(2, "0");
+    const s = String(seconds).padStart(2, "0");
 
     if (hours > 0) {
       return `${h}h ${m}m ${s}s`;
