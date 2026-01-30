@@ -65,6 +65,9 @@ const ContributionGraph = ({ data = [], dailyGoalHours = 3 }) => {
         lastMonth = runningDay.getMonth();
       }
 
+      const isCurrentYear = runningDay.getFullYear() === currentYear;
+      const timeSpentSeconds = isCurrentYear ? dataMap[dateStr] || 0 : 0;
+      const timeSpentHours = timeSpentSeconds / 3600;
       const today = new Date();
       const todayStr = localDateFormat(today);
       const isToday = dateStr === todayStr;
@@ -73,13 +76,11 @@ const ContributionGraph = ({ data = [], dailyGoalHours = 3 }) => {
       let level = 0;
       if (!isCurrentYear)
         level = -1; // Outside current year range
-      else if (isToday && !isEndOfDay)
-        level = 0; // Keep grey until day is over (11:58 PM)
       else if (timeSpentHours >= dailyGoalHours) level = 1;
       else if (timeSpentHours >= dailyGoalHours / 2) level = 2;
       else if (timeSpentHours > 0) level = 3;
 
-      week.push(level);
+      week.push({ level, isToday, isEndOfDay });
       runningDay.setDate(runningDay.getDate() + 1);
     }
     grid.push(week);
@@ -211,20 +212,34 @@ const ContributionGraph = ({ data = [], dailyGoalHours = 3 }) => {
             <div className="grid flex" style={{ gap: "3px" }}>
               {grid.map((week, i) => (
                 <div key={i} className="week-col flex-col" style={{ gap: "0" }}>
-                  {week.map((level, j) => (
-                    <div
-                      key={`${i}-${j}`}
-                      style={{
-                        width: "16px",
-                        height: "16px",
-                        backgroundColor: getColor(level),
-                        borderRadius: "1px",
-                        marginBottom: "3px",
-                        transition: "transform 0.1s ease",
-                      }}
-                      title={`Activity level: ${level}`}
-                    />
-                  ))}
+                  {week.map((cell, j) => {
+                    const { level, isToday, isEndOfDay } = cell;
+                    const showLevel = isToday && !isEndOfDay ? 0 : level;
+
+                    return (
+                      <div
+                        key={`${i}-${j}`}
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          backgroundColor: getColor(showLevel),
+                          borderRadius: "1px",
+                          marginBottom: "3px",
+                          transition: "transform 0.1s ease",
+                          border: isToday ? "1px solid #3b82f6" : "none",
+                          boxShadow: isToday
+                            ? "0 0 5px rgba(59, 130, 246, 0.5)"
+                            : "none",
+                          opacity: isToday && !isEndOfDay ? 0.6 : 1,
+                        }}
+                        title={
+                          isToday
+                            ? "Today (Tracking...)"
+                            : `Activity level: ${level}`
+                        }
+                      />
+                    );
+                  })}
                 </div>
               ))}
             </div>

@@ -36,11 +36,22 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
       );
       setStats(response.data);
 
-      // Update local baseline from today's actual data
-      const today = response.data.recentData?.[0];
-      if (today) {
-        setSessionSeconds(today.activity?.timeSpent || 0);
+      // Find today's data specifically (fallback to first record if dates match)
+      const todayStr = new Date().toISOString().split("T")[0];
+      const todayData = response.data.recentData?.find(
+        (d) => d.date === todayStr,
+      );
+
+      if (todayData) {
+        setSessionSeconds(todayData.activity?.timeSpent || 0);
+      } else {
+        setSessionSeconds(0); // No data for today yet
       }
+
+      console.log(
+        "[Dashboard] Stats fetched:",
+        todayData ? "Today found" : "Today not found",
+      );
     } catch (err) {
       console.error("Failed to fetch stats", err);
     } finally {
