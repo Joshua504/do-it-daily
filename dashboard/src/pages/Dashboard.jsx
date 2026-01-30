@@ -348,7 +348,7 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
             </h3>
             <div className="logs text-xs font-mono">
               {logs.length > 0 ? (
-                logs.map((log) => (
+                logs.slice(0, 3).map((log) => (
                   <div
                     key={log.id}
                     className="log-item mb-md p-sm"

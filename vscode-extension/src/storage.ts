@@ -28,6 +28,8 @@ export interface DailyActivity {
 export class Storage {
   private dataDir: string;
   private dataFile: string;
+  private cache: DailyActivity[] | null = null;
+  private isWriting: boolean = false;
 
   constructor(globalStoragePath: string) {
     this.dataDir = globalStoragePath;
@@ -51,7 +53,8 @@ export class Storage {
   async getToday(): Promise<DailyActivity | null> {
     const today = this.getTodayDate();
     const all = await this.getAll();
-    return all.find((a) => a.date === today) || null;
+    const existing = all.find((a) => a.date === today);
+    return existing ? JSON.parse(JSON.stringify(existing)) : null; // Return a copy
   }
 
   async getTodayOrCreate(): Promise<DailyActivity> {
@@ -81,21 +84,28 @@ export class Storage {
     const all = await this.getAll();
     const index = all.findIndex((a) => a.date === activity.date);
 
+    const activityCopy = JSON.parse(JSON.stringify(activity));
     if (index >= 0) {
-      all[index] = activity;
+      all[index] = activityCopy;
     } else {
-      all.push(activity);
+      all.push(activityCopy);
     }
 
+    this.cache = all; // Update cache immediately
     await this.writeFile(all);
   }
 
   async getAll(): Promise<DailyActivity[]> {
+    if (this.cache) {
+      return this.cache;
+    }
+
     try {
       const data = await fs.readFile(this.dataFile, "utf-8");
-      return JSON.parse(data);
+      this.cache = JSON.parse(data);
+      return this.cache || [];
     } catch (error) {
-      console.error("Error reading storage:", error);
+      // If file is empty or missing, return empty array but don't cache null
       return [];
     }
   }
