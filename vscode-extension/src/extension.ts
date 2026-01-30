@@ -81,13 +81,14 @@ export function activate(context: vscode.ExtensionContext) {
   const syncCommand = vscode.commands.registerCommand(
     "productivity.syncNow",
     async () => {
+      Logger.log("[Extension] Manual sync triggered");
       vscode.window.showInformationMessage("Syncing productivity data...");
       const success = await syncer.syncNow();
       if (success) {
         vscode.window.showInformationMessage("✓ Sync successful");
       } else {
         vscode.window.showErrorMessage(
-          "✗ Sync failed. Check backend connection.",
+          "✗ Sync failed. Check Output Channel for details.",
         );
       }
     },

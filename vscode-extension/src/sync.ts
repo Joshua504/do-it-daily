@@ -90,6 +90,9 @@ export class Syncer {
       Logger.log(
         `[Syncer] Sending data for ${activity.date} to ${backendUrl}...`,
       );
+      Logger.log(
+        `[Syncer] Payload: ${JSON.stringify(activity.activity)} (Score: ${activity.score})`,
+      );
       const response = await fetch(`${backendUrl}/api/productivity`, {
         method: "POST",
         headers: {
@@ -101,6 +104,10 @@ export class Syncer {
           isActive: !this.tracker.isCurrentlyIdle(),
         }),
       });
+
+      Logger.log(
+        `[Syncer] Response Status: ${response.status} ${response.statusText}`,
+      );
 
       if (response.status === 401) {
         Logger.error("[Syncer] Unauthorized: Invalid API Key");

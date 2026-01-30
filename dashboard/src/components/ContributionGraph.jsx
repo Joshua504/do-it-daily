@@ -65,13 +65,16 @@ const ContributionGraph = ({ data = [], dailyGoalHours = 3 }) => {
         lastMonth = runningDay.getMonth();
       }
 
-      const isCurrentYear = runningDay.getFullYear() === currentYear;
-      const timeSpentSeconds = isCurrentYear ? dataMap[dateStr] || 0 : 0;
-      const timeSpentHours = timeSpentSeconds / 3600;
+      const today = new Date();
+      const todayStr = localDateFormat(today);
+      const isToday = dateStr === todayStr;
+      const isEndOfDay = today.getHours() === 23 && today.getMinutes() >= 58;
 
       let level = 0;
       if (!isCurrentYear)
         level = -1; // Outside current year range
+      else if (isToday && !isEndOfDay)
+        level = 0; // Keep grey until day is over (11:58 PM)
       else if (timeSpentHours >= dailyGoalHours) level = 1;
       else if (timeSpentHours >= dailyGoalHours / 2) level = 2;
       else if (timeSpentHours > 0) level = 3;

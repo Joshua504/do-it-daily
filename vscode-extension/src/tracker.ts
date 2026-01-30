@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { Storage, DailyActivity } from "./storage";
+import { Logger } from "./logger";
 
 export class ActivityTracker {
   private storage: Storage;
@@ -17,7 +18,7 @@ export class ActivityTracker {
   }
 
   async start(): Promise<void> {
-    console.log("[Tracker] Starting activity tracking...");
+    Logger.log("[Tracker] Starting activity tracking...");
 
     // Track file saves
     this.saveListener = vscode.workspace.onDidSaveTextDocument((document) => {
@@ -49,7 +50,7 @@ export class ActivityTracker {
   }
 
   stop(): void {
-    console.log("[Tracker] Stopping activity tracking...");
+    Logger.log("[Tracker] Stopping activity tracking...");
     this.saveListener?.dispose();
     this.changeListener?.dispose();
     this.editorChangeListener?.dispose();
@@ -73,7 +74,7 @@ export class ActivityTracker {
 
     await this.storage.save(activity);
 
-    console.log(
+    Logger.log(
       `[Tracker] File saved: ${document.fileName} (Repo: ${repoName})`,
     );
   }
