@@ -8,7 +8,7 @@ export interface DailyActivity {
   activity: {
     filesEdited: number;
     linesChanged: number;
-    timeSpent: number; // minutes
+    timeSpent: number; // seconds
     commits?: number;
     repos?: Record<
       string,

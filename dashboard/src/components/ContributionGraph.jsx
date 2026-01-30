@@ -66,8 +66,8 @@ const ContributionGraph = ({ data = [], dailyGoalHours = 3 }) => {
       }
 
       const isCurrentYear = runningDay.getFullYear() === currentYear;
-      const timeSpentMinutes = isCurrentYear ? dataMap[dateStr] || 0 : 0;
-      const timeSpentHours = timeSpentMinutes / 60;
+      const timeSpentSeconds = isCurrentYear ? dataMap[dateStr] || 0 : 0;
+      const timeSpentHours = timeSpentSeconds / 3600;
 
       let level = 0;
       if (!isCurrentYear)

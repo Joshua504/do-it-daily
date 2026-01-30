@@ -47,7 +47,7 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
       // Update local baseline from today's actual data
       const today = response.data.recentData?.[0];
       if (today) {
-        setSessionSeconds((today.activity?.timeSpent || 0) * 60);
+        setSessionSeconds(today.activity?.timeSpent || 0);
       }
     } catch (err) {
       console.error("Failed to fetch stats", err);
@@ -317,9 +317,9 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
                           {repo.name}
                         </div>
                         <div className="meta text-dim text-xs uppercase">
-                          {Math.floor(repo.timeSpent / 60)}H{" "}
-                          {repo.timeSpent % 60}M SPENT / {repo.filesEdited}{" "}
-                          FILES
+                          {Math.floor(repo.timeSpent / 3600)}H{" "}
+                          {Math.floor((repo.timeSpent % 3600) / 60)}M SPENT /{" "}
+                          {repo.filesEdited} FILES
                         </div>
                       </div>
                     </div>

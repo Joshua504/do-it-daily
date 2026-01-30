@@ -10,7 +10,7 @@ export class ActivityTracker {
   private changeListener: vscode.Disposable | null = null;
   private selectionListener: vscode.Disposable | null = null;
   private lastInteractionTime: number = Date.now();
-  private readonly IDLE_THRESHOLD = 2 * 60 * 1000; // 2 minutes in ms
+  private readonly IDLE_THRESHOLD = 1 * 60 * 1000; // 1 minute in ms
 
   constructor(storage: Storage) {
     this.storage = storage;
@@ -112,28 +112,26 @@ export class ActivityTracker {
     }
 
     const now = Date.now();
-    const elapsed = (now - this.activeEditorStartTime) / 1000 / 60; // in minutes
+    const elapsedSeconds = (now - this.activeEditorStartTime) / 1000;
     const isIdle = now - this.lastInteractionTime > this.IDLE_THRESHOLD;
 
-    if (elapsed >= 0.5 && !isIdle) {
+    if (elapsedSeconds >= 1 && !isIdle) {
       const activity = await this.storage.getTodayOrCreate();
-      const minutesToAdd = Math.floor(elapsed);
+      const secondsToAdd = Math.floor(elapsedSeconds);
 
-      if (minutesToAdd > 0) {
+      if (secondsToAdd > 0) {
         const repoName = this.getRepoName(
           vscode.window.activeTextEditor.document.uri,
         );
-        activity.activity.timeSpent += minutesToAdd;
-        this.updateRepoStats(activity, repoName, { timeSpent: minutesToAdd });
+        activity.activity.timeSpent += secondsToAdd;
+        this.updateRepoStats(activity, repoName, { timeSpent: secondsToAdd });
 
         activity.score = this.calculateScore(activity.activity);
         await this.storage.save(activity);
 
-        // Reset start time to "now" AFTER recording to avoid double-counting or loss
         this.activeEditorStartTime = now;
       }
     } else if (isIdle) {
-      // If idle, reset start time to "now" so we don't count the idle period when they return
       this.activeEditorStartTime = now;
     }
   }
@@ -186,8 +184,8 @@ export class ActivityTracker {
     // Lines changed: 1 point per 10 lines, max 30
     score += Math.min(Math.floor(activity.linesChanged / 10), 30);
 
-    // Time spent: 1 point per 2 minutes, max 50
-    score += Math.min(Math.floor(activity.timeSpent / 2), 50);
+    // Time spent: 1 point per 120 seconds (2 minutes), max 50
+    score += Math.min(Math.floor(activity.timeSpent / 120), 50);
 
     return Math.min(score, 100); // Cap at 100
   }

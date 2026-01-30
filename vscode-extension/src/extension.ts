@@ -72,13 +72,10 @@ export function activate(context: vscode.ExtensionContext) {
   syncer.start();
   statusBar.show();
 
-  // Record active editor time every 1 minute
-  timeCheckInterval = setInterval(
-    () => {
-      tracker.recordActiveTime();
-    },
-    1 * 60 * 1000,
-  );
+  // Record active editor time every 5 seconds for near-real-time accuracy
+  timeCheckInterval = setInterval(() => {
+    tracker.recordActiveTime();
+  }, 5 * 1000);
 
   // Register commands
   const syncCommand = vscode.commands.registerCommand(
