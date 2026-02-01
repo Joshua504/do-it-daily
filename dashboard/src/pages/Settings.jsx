@@ -114,19 +114,8 @@ const Settings = ({ setIsAuthenticated, username }) => {
 
   return (
     <Layout>
-      <div
-        className="logo-section text-center mb-md"
-        style={{ paddingTop: "var(--spacing-lg)" }}
-      >
-        <h1
-          style={{
-            fontFamily: "var(--font-logo)",
-            fontSize: "3.5rem",
-            letterSpacing: "-2px",
-          }}
-        >
-          DO IT DAILY
-        </h1>
+      <div className="logo-section mb-md">
+        <h1 className="logo">DO IT DAILY</h1>
       </div>
 
       <Header setIsAuthenticated={setIsAuthenticated} username={username} />
@@ -142,15 +131,7 @@ const Settings = ({ setIsAuthenticated, username }) => {
           </span>
         </div>
 
-        <div
-          className="settings-card"
-          style={{
-            border: "1px solid var(--color-border)",
-            padding: "40px",
-            background: "#0a0a0a",
-            position: "relative",
-          }}
-        >
+        <div className="settings-card">
           <div
             className="accent-bar"
             style={{
@@ -305,14 +286,7 @@ const Settings = ({ setIsAuthenticated, username }) => {
             </p>
 
             {newKey && (
-              <div
-                className="new-key-display mb-md"
-                style={{
-                  background: "#16a34a22",
-                  border: "1px solid #16a34a",
-                  padding: "15px",
-                }}
-              >
+              <div className="new-key-display mb-md">
                 <div
                   className="text-xs uppercase bold mb-xs"
                   style={{ color: "#16a34a" }}
@@ -362,16 +336,7 @@ const Settings = ({ setIsAuthenticated, username }) => {
             </div>
           </div>
 
-          <div
-            className="warning-box text-center"
-            style={{
-              border: "1px dashed var(--color-accent)",
-              color: "var(--color-accent)",
-              fontSize: "0.9rem",
-              letterSpacing: "1px",
-              padding: "20px",
-            }}
-          >
+          <div className="warning-box text-center">
             <span style={{ fontWeight: "900" }}>
               ⚠ KEEP THIS TOKEN SECRET! ANYONE WITH ACCESS CAN MOD_LOG YOUR
               DATA.

@@ -236,3 +236,40 @@
   letter-spacing: 1px;
   text-transform: uppercase;
 }
+@media (max-width: 600px) {
+  .auth-card {
+    padding: 30px 20px;
+    margin: 10px;
+  }
+
+  .auth-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .status-bar {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .corner {
+    display: none; /* Hide decorative corners on mobile */
+  }
+}
+
+@media (max-width: 400px) {
+  .auth-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .auth-form h2 {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .btn-primary {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+}

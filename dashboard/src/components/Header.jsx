@@ -39,110 +39,36 @@ const Header = ({ setIsAuthenticated, username, isCurrentlyActive }) => {
         marginBottom: "var(--spacing-md)",
       }}
     >
-      <div
-        className="nav-pill flex items-center uppercase bold"
-        style={{
-          background: "var(--color-secondary)",
-          color: "var(--color-bg)",
-          borderRadius: "50px",
-          padding: "12px 10px",
-          width: "100%",
-          maxWidth: "900px",
-          fontSize: "0.85rem",
-          letterSpacing: "1px",
-          boxShadow: "0 4px 0 rgba(0,0,0,0.5)",
-        }}
-      >
-        <Link
-          to="/dashboard"
-          className="nav-item flex items-center justify-center gap-sm cursor-pointer hover:opacity-75"
-          style={{ flex: 1, textDecoration: "none", color: "inherit" }}
-        >
+      <div className="nav-pill uppercase bold">
+        <Link to="/dashboard" className="nav-item">
           <FaUser size={14} />
           <span>{username || "ANONYMOUS"}</span>
         </Link>
-        <div
-          className="divider"
-          style={{
-            width: "1px",
-            height: "15px",
-            background: "rgba(0,0,0,0.2)",
-            flexShrink: 0,
-          }}
-        ></div>
-        <div
-          className="nav-item flex items-center justify-center gap-sm"
-          style={{ flex: 1 }}
-        >
+        <div className="nav-divider"></div>
+        <div className="nav-item">
           <FaCalendarDay size={14} />
           <span>{dateString}</span>
         </div>
-        <div
-          className="divider"
-          style={{
-            width: "1px",
-            height: "15px",
-            background: "rgba(0,0,0,0.2)",
-            flexShrink: 0,
-          }}
-        ></div>
-        <div
-          className="nav-item flex items-center justify-center gap-sm"
-          style={{ flex: 1 }}
-        >
+        <div className="nav-divider"></div>
+        <div className="nav-item">
           <FaCode size={16} />
           <span>FULLSTACK</span>
         </div>
-        <div
-          className="divider"
-          style={{
-            width: "1px",
-            height: "15px",
-            background: "rgba(0,0,0,0.2)",
-            flexShrink: 0,
-          }}
-        ></div>
-        <div
-          className="nav-item flex items-center justify-center gap-sm"
-          style={{ flex: 1 }}
-        >
+        <div className="nav-divider"></div>
+        <div className="nav-item">
           <FaCircle
             size={10}
             style={{ color: isCurrentlyActive ? "#16a34a" : "#ef4444" }}
           />
           <span>{isCurrentlyActive ? "ACTIVE" : "IDLE"}</span>
         </div>
-        <div
-          className="divider"
-          style={{
-            width: "1px",
-            height: "15px",
-            background: "rgba(0,0,0,0.2)",
-            flexShrink: 0,
-          }}
-        ></div>
-        <Link
-          to="/settings"
-          className="nav-item flex items-center justify-center gap-sm cursor-pointer hover:opacity-75"
-          style={{ flex: 1, textDecoration: "none", color: "inherit" }}
-        >
+        <div className="nav-divider"></div>
+        <Link to="/settings" className="nav-item">
           <FaCog size={16} />
           <span>SETTINGS</span>
         </Link>
-        <div
-          className="divider"
-          style={{
-            width: "1px",
-            height: "15px",
-            background: "rgba(0,0,0,0.2)",
-            flexShrink: 0,
-          }}
-        ></div>
-        <div
-          onClick={handleLogout}
-          className="nav-item flex items-center justify-center gap-sm cursor-pointer hover:opacity-75"
-          style={{ flex: 1 }}
-        >
+        <div className="nav-divider"></div>
+        <div onClick={handleLogout} className="nav-item">
           <span>LOGOUT</span>
           <FaSignOutAlt size={14} />
         </div>

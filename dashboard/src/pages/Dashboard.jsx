@@ -98,19 +98,8 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
   return (
     <Layout>
       {/* DO IT DAILY Logo centered above header */}
-      <div
-        className="logo-section text-center mb-md"
-        style={{ paddingTop: "var(--spacing-lg)" }}
-      >
-        <h1
-          style={{
-            fontFamily: "var(--font-logo)",
-            fontSize: "3.5rem",
-            letterSpacing: "-2px",
-          }}
-        >
-          DO IT DAILY
-        </h1>
+      <div className="logo-section">
+        <h1 className="logo">DO IT DAILY</h1>
       </div>
 
       <Header
@@ -120,13 +109,7 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
       />
 
       <main className="container">
-        <div
-          className="flex gap-md mb-xl"
-          style={{
-            borderTop: "1px solid var(--color-border)",
-            paddingTop: "var(--spacing-xl)",
-          }}
-        >
+        <div className="stats-cards mb-xl">
           <StatCard
             label="Total Contributions"
             value={stats?.totalContributions?.toLocaleString() || "0"}
@@ -154,178 +137,72 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
         </div>
 
         <div className="section mb-xl">
-          <h3
-            className="section-title uppercase flex items-center gap-sm mb-lg"
-            style={{ fontSize: "1.2rem" }}
-          >
+          <h3 className="section-title uppercase flex items-center gap-sm mb-lg">
             <span className="text-primary">☘</span> Download Extensions
           </h3>
-          <div className="flex gap-lg">
-            <div
-              className="card flex justify-between items-center w-full"
-              style={{
-                border: "1px solid var(--color-border)",
-                padding: "30px",
-                background: "#0a0a0a",
-              }}
-            >
+          <div className="extensions-grid">
+            <div className="extension-card">
               <div className="flex items-center gap-lg">
-                <div
-                  className="icon-box flex justify-center items-center"
-                  style={{
-                    width: "60px",
-                    height: "60px",
-                    background: "#1e1e1e",
-                  }}
-                >
-                  <FaCode size={30} color="#3b82f6" />
+                <div className="ext-icon vscode">
+                  <FaCode size={24} />
                 </div>
                 <div>
-                  <div
-                    className="uppercase bold"
-                    style={{
-                      fontSize: "1.2rem",
-                      letterSpacing: "2px",
-                      marginBottom: "5px",
-                    }}
-                  >
-                    VS CODE
-                  </div>
-                  <div
-                    className="text-dim text-xs uppercase"
-                    style={{ letterSpacing: "1px" }}
-                  >
+                  <div className="uppercase bold text-sm">VS CODE</div>
+                  <div className="ext-desc">
                     PIXEL-LOG SYSTEM INTEGRATION V1.2
                   </div>
                 </div>
               </div>
-              <div>
-                <span
-                  style={{
-                    fontSize: "0.7rem",
-                    color: "var(--color-primary)",
-                    fontWeight: "bold",
-                    fontFamily: "var(--font-mono)",
-                    border: "1px solid var(--color-primary)",
-                    padding: "4px 8px",
-                    borderRadius: "4px",
-                  }}
-                >
-                  COMING SOON
-                </span>
+              <div className="mt-sm">
+                <span className="badge">COMING SOON</span>
               </div>
             </div>
 
-            <div
-              className="card flex justify-between items-center w-full"
-              style={{
-                border: "1px solid var(--color-border)",
-                padding: "30px",
-                background: "#0a0a0a",
-              }}
-            >
+            <div className="extension-card">
               <div className="flex items-center gap-lg">
-                <div
-                  className="icon-box flex justify-center items-center"
-                  style={{
-                    width: "60px",
-                    height: "60px",
-                    background: "#1e1e1e",
-                  }}
-                >
-                  <FaShapes size={30} color="#a855f7" />
+                <div className="ext-icon figma">
+                  <FaShapes size={24} />
                 </div>
                 <div>
-                  <div
-                    className="uppercase bold"
-                    style={{
-                      fontSize: "1.2rem",
-                      letterSpacing: "2px",
-                      marginBottom: "5px",
-                    }}
-                  >
-                    FIGMA
-                  </div>
-                  <div
-                    className="text-dim text-xs uppercase"
-                    style={{ letterSpacing: "1px" }}
-                  >
-                    VECTOR PIXEL ASSETS BRIDGE
-                  </div>
+                  <div className="uppercase bold text-sm">FIGMA</div>
+                  <div className="ext-desc">VECTOR PIXEL ASSETS BRIDGE</div>
                 </div>
               </div>
-              <div>
-                <span
-                  style={{
-                    fontSize: "0.7rem",
-                    color: "var(--color-primary)",
-                    fontWeight: "bold",
-                    fontFamily: "var(--font-mono)",
-                    border: "1px solid var(--color-primary)",
-                    padding: "4px 8px",
-                    borderRadius: "4px",
-                  }}
-                >
-                  COMING SOON
-                </span>
+              <div className="mt-sm">
+                <span className="badge">COMING SOON</span>
               </div>
             </div>
           </div>
         </div>
 
-        <ContributionGraph
-          data={stats?.recentData || []}
-          dailyGoalHours={stats?.dailyGoalHours || 3}
-        />
+        <div className="graph-scroll-container">
+          <ContributionGraph
+            data={stats?.recentData || []}
+            dailyGoalHours={stats?.dailyGoalHours || 3}
+          />
+        </div>
 
-        <div
-          className="active-repos flex mt-xl"
-          style={{ marginTop: "var(--spacing-xl)", gap: "80px" }}
-        >
-          <div className="repos w-full" style={{ flex: 1 }}>
-            <h3
-              className="uppercase flex items-center gap-sm mb-lg"
-              style={{
-                fontSize: "1.2rem",
-                fontFamily: "'Press Start 2P', cursive",
-              }}
-            >
-              <FaFolder color="#facc15" /> ACTIVE_REPOS
+        <div className="active-repos flex mt-xl">
+          <div className="repos-section">
+            <h3 className="section-title uppercase flex items-center gap-sm mb-lg">
+              <span className="text-secondary">◈</span> Top Repositories
             </h3>
-            <div className="repo-list flex-col gap-md">
+            <div className="repos-list">
               {(stats?.topRepos || []).length > 0 ? (
                 stats.topRepos.map((repo, i) => (
-                  <div
-                    key={repo.name}
-                    className="repo-item flex justify-between items-center"
-                    style={{
-                      border: "1px solid var(--color-border)",
-                      padding: "20px",
-                      background: "#0a0a0a",
-                    }}
-                  >
+                  <div key={repo.name} className="repo-item">
                     <div className="flex items-center gap-md">
-                      <span
-                        className="text-dim font-mono"
-                        style={{ fontSize: "0.8rem" }}
-                      >
-                        0{i + 1}
-                      </span>
-                      <div>
-                        <div
-                          className="name uppercase bold"
-                          style={{ letterSpacing: "1px", marginBottom: "4px" }}
-                        >
-                          {repo.name}
-                        </div>
-                        <div className="meta text-dim text-xs uppercase">
+                      <span className="repo-num">0{i + 1}</span>
+                      <div className="repo-info">
+                        <h4 className="name uppercase bold">{repo.name}</h4>
+                        <p className="meta text-dim text-xs uppercase">
                           {Math.floor(repo.timeSpent / 3600)}H{" "}
                           {Math.floor((repo.timeSpent % 3600) / 60)}M SPENT /{" "}
                           {repo.filesEdited} FILES
-                        </div>
+                        </p>
                       </div>
                     </div>
-                    <div className="text-dim">→</div>
+                    <div className="repo-arrow">→</div>
                   </div>
                 ))
               ) : (
@@ -336,36 +213,23 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
             </div>
           </div>
 
-          <div className="system-logs w-full" style={{ flex: 1 }}>
-            <h3
-              className="uppercase flex items-center gap-sm mb-lg"
-              style={{
-                fontSize: "1.2rem",
-                fontFamily: "'Press Start 2P', cursive",
-              }}
-            >
+          <div className="system-logs">
+            <h3 className="section-title uppercase flex items-center gap-sm mb-lg">
               <FaHistory color="#ef4444" /> SYSTEM_LOGS
             </h3>
-            <div className="logs text-xs font-mono">
+            <div className="logs-list">
               {logs.length > 0 ? (
                 logs.slice(0, 3).map((log) => (
-                  <div
-                    key={log.id}
-                    className="log-item mb-md p-sm"
-                    style={{
-                      borderLeft: `2px solid ${getLogColor(log.type)}`,
-                      background: "rgba(255,255,255,0.02)",
-                    }}
-                  >
+                  <div key={log.id} className={`log-item ${log.type}`}>
                     <div className="flex items-center justify-between mb-xs">
-                      <span style={{ color: getLogColor(log.type) }}>
-                        [{log.type.toUpperCase()}]
-                      </span>
-                      <span className="text-dim" style={{ fontSize: "0.9rem" }}>
+                      <div className={`log-dot ${log.type}`} />
+                      <span className="text-dim text-2xs">
                         {new Date(log.timestamp).toLocaleString()}
                       </span>
                     </div>
-                    <div className="message uppercase">{log.message}</div>
+                    <div className="message uppercase text-xs">
+                      {log.message}
+                    </div>
                   </div>
                 ))
               ) : (

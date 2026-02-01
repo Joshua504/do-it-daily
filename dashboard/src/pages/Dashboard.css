@@ -426,10 +426,175 @@
   text-transform: uppercase;
 }
 
+.stat-card {
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.02);
+  flex: 1;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.stat-value {
+  font-family: "Press Start 2P", cursive;
+  font-size: 3rem;
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.stat-unit {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.logo {
+  font-family: var(--font-logo);
+  font-size: 5rem;
+  text-align: center;
+  margin-top: 40px;
+  letter-spacing: -2px;
+}
+
+.logo-section {
+  text-align: center;
+}
+
+/* Global Header Refinements */
+.nav-pill {
+  display: flex;
+  align-items: center;
+  background: var(--color-secondary);
+  color: var(--color-bg);
+  border-radius: 50px;
+  padding: 12px 10px;
+  width: 100%;
+  max-width: 900px;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.nav-divider {
+  width: 1px;
+  height: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.badge {
+  font-size: 0.7rem;
+  color: var(--color-primary);
+  font-weight: bold;
+  font-family: var(--font-mono);
+  border: 1px solid var(--color-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+/* Settings Page */
+.settings-card {
+  border: 1px solid var(--color-border);
+  padding: 40px;
+  background: #0a0a0a;
+  position: relative;
+}
+
+.token-section {
+  margin-bottom: 40px;
+}
+
+.warning-box {
+  border: 1px dashed var(--color-accent);
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  padding: 20px;
+}
+
+.new-key-display {
+  background: #16a34a22;
+  border: 1px solid #16a34a;
+  padding: 15px;
+}
+
+/* Tablet Responsive (iPad Pro/Air) */
+@media (max-width: 1024px) {
+  .dashboard-header h1 {
+    font-size: 36px;
+  }
+
+  .logo {
+    font-size: 3.5rem;
+  }
+
+  .nav-pill {
+    font-size: 0.75rem;
+    padding: 10px;
+  }
+
+  .nav-item span {
+    display: none; /* Hide text on small tablets, keep icons */
+  }
+
+  .nav-item.show-mobile span {
+    display: inline;
+  }
+
+  .stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-content {
+    padding: 0 10px;
+  }
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .dashboard-header h1 {
     font-size: 32px;
+  }
+
+  .logo {
+    font-size: 2.5rem;
+  }
+
+  .nav-pill {
+    flex-wrap: wrap;
+    border-radius: 12px;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .nav-item {
+    flex: 0 0 calc(50% - 10px);
+    justify-content: flex-start;
+    padding: 5px;
+  }
+
+  .nav-item span {
+    display: inline;
+    font-size: 0.7rem;
+  }
+
+  .nav-divider {
+    display: none;
   }
 
   .nav-tabs {
@@ -445,10 +610,25 @@
     grid-template-columns: 1fr;
   }
 
+  .stat-value {
+    font-size: 2rem;
+  }
+
   .activity-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+  }
+
+  .active-repos {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .repos-section,
+  .system-logs {
+    width: 100%;
+    flex: none;
   }
 
   .bottom-section {
@@ -484,13 +664,106 @@
     font-size: 24px;
   }
 
+  .settings-card {
+    padding: 20px;
+  }
+
+  .token-section .flex.justify-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .token-section button {
+    width: 100%;
+  }
+
   .heatmap-controls {
     flex-direction: column;
+    gap: 5px;
   }
 
   .control-btn {
     width: 100%;
+    margin-top: 5px;
   }
+
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header h1 {
+    font-size: 20px;
+  }
+
+  .logo {
+    font-size: 2rem;
+    margin-top: 20px;
+  }
+
+  .nav-pill {
+    border-radius: 8px;
+  }
+
+  .nav-item {
+    flex: 0 0 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .nav-item:last-child {
+    border-bottom: none;
+  }
+
+  .number {
+    font-size: 20px;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .stat-card {
+    padding: 15px;
+  }
+
+  .stat-card {
+    padding: 20px 15px;
+  }
+
+  .repo-item,
+  .log-item {
+    padding: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .repo-num {
+    margin-bottom: 5px;
+  }
+
+  .active-repos {
+    flex-direction: column;
+    gap: 40px !important;
+  }
+}
+
+/* Scrollable container for graph */
+.graph-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.graph-scroll-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.graph-scroll-container::-webkit-scrollbar-thumb {
+  background: #333;
 }
 @keyframes blink {
   0%,
