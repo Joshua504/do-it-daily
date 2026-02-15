@@ -111,34 +111,32 @@ const ContributionGraph = ({ data = [], dailyGoalHours = 3 }) => {
         position: "relative",
       }}
     >
-      <div
-        className="header flex justify-between items-center"
-        style={{ marginBottom: "30px" }}
-      >
-        <div>
-          <h3
-            className="uppercase"
-            style={{
-              fontSize: "1.2rem",
-              letterSpacing: "2px",
-              fontFamily: "'Press Start 2P', cursive",
-              marginBottom: "10px",
-            }}
-          >
-            Yearly Activity Log
-          </h3>
-          <p
-            className="text-dim uppercase text-xs"
-            style={{ letterSpacing: "1px" }}
-          >
-            MATRIX ANALYSIS OF SYSTEM UPDATES / {currentYear}
-          </p>
+      <div className="graph-header">
+        <div className="graph-header-top">
+          <div className="graph-title-rows">
+            <div className="graph-row">
+              <span className="title-part">YEARLY</span>
+            </div>
+            <div className="graph-row">
+              <span className="title-part">ACTIVITY</span>
+              <span className="status-item mobile-only">SESSION_SYNC</span>
+            </div>
+            <div className="graph-row">
+              <span className="title-part">LOG</span>
+              <span className="status-item mobile-only">
+                [GOAL: {dailyGoalHours}H]
+              </span>
+            </div>
+          </div>
+
+          <div className="graph-status-group desktop-only">
+            <div className="status-item">SESSION_SYNC</div>
+            <div className="status-item">[GOAL: {dailyGoalHours}H]</div>
+          </div>
         </div>
-        <div
-          className="year text-primary text-xs uppercase"
-          style={{ letterSpacing: "1px" }}
-        >
-          SESSION_SYNC [GOAL: {dailyGoalHours}H]
+
+        <div className="graph-subtitle">
+          MATRIX ANALYSIS OF SYSTEM UPDATES / {currentYear}
         </div>
       </div>
 

@@ -37,7 +37,8 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
       setStats(response.data);
 
       // Find today's data specifically (fallback to first record if dates match)
-      const todayStr = new Date().toISOString().split("T")[0];
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
       const todayData = response.data.recentData?.find(
         (d) => d.date === todayStr,
       );
@@ -182,7 +183,7 @@ const Dashboard = ({ setIsAuthenticated, username }) => {
           />
         </div>
 
-        <div className="active-repos flex mt-xl">
+        <div className="active-repos mt-xl">
           <div className="repos-section">
             <h3 className="section-title uppercase flex items-center gap-sm mb-lg">
               <span className="text-secondary">◈</span> Top Repositories

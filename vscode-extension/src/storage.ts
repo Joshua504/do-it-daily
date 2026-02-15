@@ -85,6 +85,10 @@ export class Storage {
     const index = all.findIndex((a) => a.date === activity.date);
 
     const activityCopy = JSON.parse(JSON.stringify(activity));
+
+    // Always mark as unsynced when saving new activity
+    activityCopy.synced = false;
+
     if (index >= 0) {
       all[index] = activityCopy;
     } else {
@@ -116,11 +120,12 @@ export class Storage {
   }
 
   async markSynced(date: string): Promise<void> {
-    const activity = await this.getToday();
+    const all = await this.getAll();
+    const activity = all.find((a) => a.date === date);
     if (activity) {
       activity.synced = true;
       activity.syncedAt = new Date().toISOString();
-      await this.save(activity);
+      await this.writeFile(all);
     }
   }
 

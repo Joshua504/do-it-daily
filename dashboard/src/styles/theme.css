@@ -111,6 +111,12 @@ button {
 .text-center {
   text-align: center;
 }
+.text-sm {
+  font-size: 0.875rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+}
 .mb-sm {
   margin-bottom: var(--spacing-sm);
 }

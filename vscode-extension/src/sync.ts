@@ -149,12 +149,18 @@ export class Syncer {
       return;
     }
 
+    const formatTime = (seconds: number) => {
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+    };
+
     const stats = `
 📊 Today's Productivity Stats
 
 📝 Files Edited: ${activity.activity.filesEdited}
 📄 Lines Changed: ${activity.activity.linesChanged}
-⏱️  Time Spent: ${activity.activity.timeSpent} minutes
+⏱️  Time Spent: ${formatTime(activity.activity.timeSpent)} (HH:MM)
 📈 Productivity Score: ${activity.score}/100
 🔄 Synced: ${activity.synced ? "✓ Yes" : "✗ No"}
     `.trim();
